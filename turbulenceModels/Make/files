@@ -1,0 +1,5 @@
+/* Turbulence models */
+/*	Ekman layer related	*/
+kEpsilonLengthLimited/kEpsilonLengthLimited.C
+LIB = $(FOAM_USER_LIBBIN)/lolEkmanLayerModels
+

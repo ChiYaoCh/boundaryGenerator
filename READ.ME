@@ -1,0 +1,53 @@
+data:		Sep. 24. 2015
+Author:		Fraunhofer IWES
+Access right:	all Openfoam users in the NEWA project
+Contact Person:	Chi-Yao Chang
+Email:		chi-yao.chang@iwes.fraunhofer.de
+Objective:	Numerical generation of inlet boundary condition
+Overview:	
+		The numerically generated boundary conditions, the SOWE presentation is in the ./Lit/ directory 
+Content in detail:	
+1. [solver] generateBoundary :
+	This solver is used for generation 1D velocity, temperature and turbulent profiles.
+	By utilizing the identical turbulence model, this methodology can avoid certain degree of numerical errors.
+	The basedline equation system is identical to the 3D solver (simpleFoam, bouyantBossinesqSimpleFoam,ect.). 
+	The additional operator is the volumetric flow control, for which the bulk velocity(Ubar) is read from the constent/transportProperties
+	Certain variables will not be taken into account in the algorithsm for some conditions, but they should exist in the 0 folder.
+	 
+2. [utilities] These are the quick and dirty tools to bridge the 1D results to 3D domain as boundary conditions.
+	-setDiscreteFields : downlaoded from http://www.openfoamwiki.net/index.php/Contrib_setDiscreteFields
+	-writeBoundaryData : writeDown the simulation results of generateBoundary in boundaryData.dat under the folder ./generateBoundary
+	-writeInletPatchCoordinate : This tool write down the coordinate of the inlet patch into a file called inletPatchCoordinate.dat. 
+					To apply this utility, user shall have a patch named "inlet"
+
+3. [turbulenceModels] kEpsilonLengthLimited :
+	cite from the Dissertation of Tilman Koblitz (eqn 2.20) 
+	detail unter: http://orbit.dtu.dk/files/99726846/DTU_Wind_Energy_PhD_0019_EN_.pdf
+		C_e1star = C_e1 +(C_e2-C_e1)l_t/l_e
+		l_e = 0.00027*G/f_c	for neutral condition
+
+4. [case] demo:
+	./demo/utilities: a python script to generate the bulk velocity and prescribe the setups of boundary condition to provent some user made mistakes
+		calculateUbar.py : 		for general case without taking the Coriolis force into account
+		turbulentEkmanSpiral.py :	for the neutral condition concerning the Coriolis force, the default setup is for Leipzig data
+		by 'pyhton calculateUbar.py/turbulentEkmanSpiral.py, a file called boundaryCondition will be generated.
+		solver will come to this file for certain parameters
+		for special changes, please directly change it in the pythonscript.
+
+Usage:
+1. user should first generate the 3D calculation domain with certain cell numer and grading(grading) in noral direction(Nz), and set these 2 values in the python script.
+2. python the script, the file boundaryCondition will be generated
+3. create the one dimensional domain in the generateBoundary folder(blockMesh). The needed parameters in blockMeshDict will call the "utilites/boundaryCondtions" file
+4. execute the "generateBoundary" in the generateBoundary folder
+5. using "writeBoundaryData" to wirte down the 1D results
+6. using "writeInletPatchCoordinate" in the 3D case directory and the coordinates of inlet patch will be written
+7. in the /demo/utilites/, "python writeSetDiscreteFieldsDict.py" to interpolate the 1D resluts to 3D inlet patch coordinate based on height
+	this python script will create the setDiscreteFieldsDict in system folder of 3D case(./demo/system/)	
+8. run setDiscreteFields to put these data into inlet patch.
+
+All these procedure are written in AllRun.sh
+
+comments:	
+	sorry, it's pretty quick and dirty. I did't find the time to search for a sophisticated solution of bridging.
+
+

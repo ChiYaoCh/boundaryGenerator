@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    class           dictionary;
+    object          setDiscreteFieldsDict;
+}
+
+Fields
+(
+	keyword1
+	{
+		field U;        //targetField        		
+                type vector;    //type "scalar" or "vector" 
+		direction "x";  //direction "x","y", or "z" 
+		internal true;  //set internal field or not ,true or false
+		patchNames
+                (
+                patch1
+                patch2
+                );              //patchNames to set value 
+                profile
+                (
+                (0 0 0 1.0 0.0 0.0)
+                (1 0 0 0.5 0.5 0.0)
+                (2 0 0 0.0 1.0 0.0)
+                );              //if type is vector (x y z Ux Uy Uz)
+	}
+	keyword2
+	{
+		field p;        //targetField        		
+                type scalar;    //type "scalar" or "vector" 
+		direction "y";  //direction "x","y", or "z" 
+		internal true;  //
+		patchNames 
+                (
+                patch1
+                patch2
+                );              //patchNames to set value 
+                profile
+                (
+                (0 0 0 -1.0 )
+                (0 1 0 -0.5 )
+                (0 2 0 0.0 )
+                );              //if type scalar (x y z p)
+	}
+);
