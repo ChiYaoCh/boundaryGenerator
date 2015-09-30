@@ -1,0 +1,14 @@
+Fields
+(
+	keyword1
+	{
+		field U;        //targetField        		
+                type vector;    //type "scalar" or "vector" 
+		direction "z";  //direction "x","y", or "z" 
+		internal false;  //set internal field or not ,true or false
+		patchNames
+                (
+	                inlet
+                );              //patchNames to set value 
+                profile
+                (

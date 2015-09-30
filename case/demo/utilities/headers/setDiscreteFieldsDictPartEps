@@ -1,0 +1,12 @@
+	keyword4
+	{
+		field epsilon;        //targetField        		
+                type scalar;    //type "scalar" or "vector" 
+		direction "z";  //direction "x","y", or "z" 
+		internal false;  //
+		patchNames 
+                (
+                	inlet
+                );              //patchNames to set value 
+                profile
+                (

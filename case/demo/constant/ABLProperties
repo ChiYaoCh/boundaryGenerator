@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           dictionary;
+    object          ABLProperties;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Is average wind at a specified height driven to a specified velocity?
+driveWindOn               true;
+
+// Desired horizontally-averaged wind speed at a certain height
+UWindSpeed                UWindSpeed [0 1 -1 0 0 0 0] 1.0;
+
+// Desired horizontally-averaged wind direction at a height (degrees)
+UWindDir                  270;
+
+// Height at which horizontally-averaged wind vector is specified
+hWind                     hWind [0 1 0 0 0 0 0] 500.0;
+
+// Relaxation factor on the pressure gradient control
+alpha                     0.9;
+
+// Name of the lower surface patch
+lowerBoundaryName         "ground";
+
+// Name of the upper surface patch
+upperBoundaryName         "top";
+
+// ************************************************************************* //

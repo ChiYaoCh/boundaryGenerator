@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      sampleDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "../../utilities/boundaryConditions"
+
+interpolationScheme cellPoint;
+  
+  setFormat       raw;
+  sets
+  (
+      boundaryProfile
+      {
+          type   uniform; //cloud;
+         axis    z; // xyz;
+        start (25 25 $zmin);
+        end   (25 25 $zmax);
+        nPoints  200;
+      }
+
+
+  );
+  
+  fields          ( 
+                   U
+                   k
+		   T	
+                  ); 

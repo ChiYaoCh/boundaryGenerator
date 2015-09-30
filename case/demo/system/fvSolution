@@ -1,0 +1,154 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.6                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+/*
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-16;
+        relTol          0.01;
+    }
+
+    pd
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-16;
+        relTol          0.01;
+    }
+
+    pdFinal
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-16;
+        relTol          0.01;
+    }
+*/
+    pd
+    {
+        solver           GAMG;
+        tolerance        1e-7;
+        relTol           0.1;
+        smoother         GaussSeidel;
+        nPreSweeps       0;
+        nPostSweeps      2;
+        cacheAgglomeration on;
+        agglomerator     faceAreaPair;
+        nCellsInCoarsestLevel 10;
+        mergeLevels      1;
+    }
+
+    p
+    {
+        solver           GAMG;
+        tolerance        1e-7;
+        relTol           0.1;
+        smoother         GaussSeidel;
+        nPreSweeps       0;
+        nPostSweeps      2;
+        cacheAgglomeration on;
+        agglomerator     faceAreaPair;
+        nCellsInCoarsestLevel 10;
+        mergeLevels      1;
+    }
+
+
+    U
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-16;
+        relTol          0.1;
+    }
+    T
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-16;
+        relTol          0.1;
+    }
+
+    k
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-16;
+        relTol          0.1;
+    }
+
+    epsilon
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-16;
+        relTol          0.1;
+    }
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 1;
+    pdRefCell                0;
+    pdRefValue               0;
+
+    p_totRefCell            0;
+    p_totRefValue           0;
+
+    residualControl
+    {
+        pd              1e-5;
+        U               1e-5;
+        "(k|epsilon)"   1e-5;
+    }
+
+}
+
+potentialFlow
+{
+    nNonOrthogonalCorrectors 3;
+}
+
+#include "../utilities/boundaryConditions"
+
+options
+{
+
+    pdRefOn                  true;
+    pdRefCell                0;
+    pdRefValue               0;
+
+    tempEqnOn                $TEqnOn;
+}
+
+
+relaxationFactors
+{
+    pd              0.4;
+    U               0.6;
+    k               0.2;
+    epsilon         0.2;
+    T		    0.2;	
+    R               0.5;
+    nuTilda         0.5;
+}
+
+
+// ************************************************************************* //
