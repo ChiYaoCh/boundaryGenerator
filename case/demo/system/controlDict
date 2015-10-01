@@ -45,11 +45,8 @@ timePrecision   6;
 
 runTimeModifiable yes;
 
-//libs ( "/user/iwes/tode0315/OF_211/MYLIBRARIES/lib/myTurbulenceModelsAndWallFunctions.so" );
-
 libs (
-        "lolModRANSModels.so"
-        "lolDerivedPatchModels.so"
+        "lolEkmanLayerModels.so"
 );
 
 // ************************************************************************* //
