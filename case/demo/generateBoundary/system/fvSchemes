@@ -51,6 +51,10 @@ laplacianSchemes
 interpolationSchemes
 {
     default         linear;
+    U		    cellPoint;
+    k		    cellPoint;
+    epsilon	    cellPoint;
+    T		    cellPoint;			
 }
 
 snGradSchemes

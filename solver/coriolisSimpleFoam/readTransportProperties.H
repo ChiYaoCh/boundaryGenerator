@@ -1,0 +1,39 @@
+    Info<< "\nReading transportProperties\n" << endl;
+    IOdictionary transportProperties
+    (
+        IOobject
+        (
+            "transportProperties",
+            runTime.constant(),
+            mesh,
+            IOobject::MUST_READ_IF_MODIFIED,
+            IOobject::NO_WRITE,
+            false
+        )
+    );
+
+
+    dimensionedScalar nu( transportProperties.lookup("nu"));
+
+    // Reference temperature [K]
+    dimensionedScalar TRef(transportProperties.lookup("TRef"));
+
+    // Laminar Prandtl number
+    dimensionedScalar Pr(transportProperties.lookup("Pr"));
+
+    // Turbulent Prandtl number
+    dimensionedScalar Prt(transportProperties.lookup("Prt"));
+
+    // Specific Heat capacity
+    dimensionedScalar Cp(transportProperties.lookup("Cp"));
+
+    // Coriolis vector 
+    dimensionedVector Omega(transportProperties.lookup("Omega"));
+
+    // Coriolis vector 
+    dimensionedVector g(transportProperties.lookup("g"));
+
+    //  Geostrophic Velocity
+    dimensionedVector Ug(transportProperties.lookup("Ug") );
+
+
