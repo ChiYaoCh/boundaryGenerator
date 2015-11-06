@@ -53,13 +53,32 @@ int main(int argc, char *argv[])
 # include "createTime.H"
 # include "createPolyMesh.H"
 using namespace Foam;
+
+
+	    IOdictionary patchNameDict
+	    (
+	        IOobject
+	        (
+	            "patchNameDict",
+	            mesh.time().constant(),
+	            mesh,
+	            IOobject::MUST_READ_IF_MODIFIED,
+	            IOobject::NO_WRITE
+	        )
+	    );
+
+        const wordList patchNames(patchNameDict.lookup("patches"));
+
 	Info<< "Dump face centres of given patch\n" << endl;
 	//change the patch name to your boundary name
-	label patchI = mesh.boundaryMesh().findPatchID("inlet");
+
+    forAll(patchNames, i)
+    {
+	label patchI = mesh.boundaryMesh().findPatchID(patchNames[i]);
 
         OFstream outPutFile
         (
-            runTime.path()/"inletPatchCoordinate.dat"
+            runTime.path()/"PatchCoordinate.dat"
         );
 
 	forAll(mesh.boundaryMesh()[patchI].faceCentres(), faceI)
@@ -69,7 +88,7 @@ using namespace Foam;
 		scalar z = mesh.boundaryMesh()[patchI].faceCentres()[faceI].z();
 		outPutFile <<x<<tab<<y<<tab<<z<<tab<<endl;
 	}
-
+   }
 
 }
 
