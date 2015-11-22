@@ -94,14 +94,15 @@ def calctEkamnV(z, z0, zp, alpha, gamma, G, utau, f):
 
 def calcUbar(zmax, zmin, z0, zp, alpha, gamma, G, utau, f):
 
-    uBar, error = quad(calctEkamnU, zmin, zmax, args=(z0, zp, alpha, gamma, G, utau, f))
+    uBar, error = quad(calctEkamnU, 0, zmax-zmin, args=(z0, zp, alpha, gamma, G, utau, f))
     uBar = uBar/(zmax-zmin)
 
     return uBar
 #--------------------------------------------------------------------------------------
 def calcVbar(zmax, zmin, z0, zp, alpha, gamma, G, utau, f):
 
-    uBar, error = quad(calctEkamnV, zmin, zmax, args=(z0, zp, alpha, gamma, G, utau, f))
+    	
+    uBar, error = quad(calctEkamnV, 0, zmax-zmin, args=(z0, zp, alpha, gamma, G, utau, f))
     uBar = uBar/(zmax-zmin)
 
     return uBar
@@ -113,11 +114,13 @@ def calcVbar(zmax, zmin, z0, zp, alpha, gamma, G, utau, f):
 #=======================================================================================#
 U = 17.0										#
 V = 0.0										#
-Href = 4000.0										#
+Href = 4000.0	# reference height (distance to the ground)				#
 Tref = 20+273										#
 latitude = 90	 # in degree (°)							#
-z0 = 0.3										#								
-zmin= 0											#
+z0 = 0.3
+											#					
+zmin= 266										#
+zmax= Href+zmin										#
 Nz=300				#make sure they are identical to the 3D case		#
 grad=60				#make sure they are identical to the 3D case		#
 pdType = "fixedValue"									#
@@ -146,15 +149,15 @@ print "delta:", zp
 
 
 file= open("analytic.dat","w")
-for i in range(0, int(Href*2)):
-	z = float(i)
+for i in range(int(zmin), int(zmax)):
+	z = float(i)-zmin
 	ux = calctEkamnU(z, z0, zp, alpha, gamma, G, utau, f)
 	uy = calctEkamnV(z, z0, zp, alpha, gamma, G, utau, f)
-	file.write( '0 '+'0 '+str(z)+' '+str(ux)+' '+str(uy)+' 0 '+'\n')
+	file.write( '0 '+'0 '+str(i)+' '+str(ux)+' '+str(uy)+' 0 '+'\n')
 file.close()
 
-uxbar = calcUbar(Href, zmin, z0, zp, alpha, gamma, G, utau, f)
-uybar = calcVbar(Href, zmin, z0, zp, alpha, gamma, G, utau, f)
+uxbar = calcUbar(zmax, zmin, z0, zp, alpha, gamma, G, utau, f)
+uybar = calcVbar(zmax, zmin, z0, zp, alpha, gamma, G, utau, f)
 
 
 print "******  for settlement *********"
